@@ -1,4 +1,4 @@
-# Experiment 5 – Breadth First Search (BFS)
+# Experiment 6– Breadth First Search (BFS)
 
 ## Aim
 
