@@ -38,11 +38,20 @@ bfs_queue([Path|Paths],Goal,Solution) :-
     bfs_queue(Queue,Goal,Solution).
 
 
-Query
+## Query
+
+```prolog
 ?- bfs(a,d,Path).
-Output
+```
+
+## Output
+
+```text
 Path = [d,b,a] ;
 Path = [d,c,a] ;
 false.
-Result
+```
+
+## Result
+
 Thus, Breadth First Search was successfully implemented and verified using Prolog.
