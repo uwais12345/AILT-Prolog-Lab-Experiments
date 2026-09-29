@@ -17,7 +17,7 @@ To implement Breadth First Search (BFS) using Prolog.
 
 ## Program
 
-prolog
+```prolog
 connected(a,b).
 connected(a,c).
 connected(b,d).
@@ -36,8 +36,7 @@ bfs_queue([Path|Paths],Goal,Solution) :-
         NewPaths),
     append(Paths,NewPaths,Queue),
     bfs_queue(Queue,Goal,Solution).
-
-
+```
 ## Query
 
 ```prolog
