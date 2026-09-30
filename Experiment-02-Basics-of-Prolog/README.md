@@ -1,4 +1,4 @@
-# Experiment 1 – Basics of Prolog
+# Experiment 2 – Basics of Prolog
 
 ## Aim
 
