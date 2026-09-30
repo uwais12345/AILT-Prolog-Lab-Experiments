@@ -1,4 +1,4 @@
-# Experiment 9 – Water Jug Problem
+# Experiment 3 – Water Jug Problem
 
 ## Aim
 
