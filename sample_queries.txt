@@ -1,0 +1,183 @@
+% ============================================================================
+% SAMPLE PROLOG QUERIES
+% Project: Personalized Product Recommendation and Intelligent Store Placement
+% Engine: SWI-Prolog
+% ============================================================================
+% Instructions:
+% 1. Start SWI-Prolog in this directory:
+%    $ swipl
+% 2. Consult the knowledge base:
+%    ?- [recommendation].
+% 3. Execute any of the queries below. Press ';' to see backtracking in action!
+% ============================================================================
+
+% ----------------------------------------------------------------------------
+% 1. SYSTEM INITIALIZATION & APPLICATION LAUNCH
+% ----------------------------------------------------------------------------
+
+% Launch the interactive terminal UI frontend
+?- start.
+
+% Check the currently active user session
+?- current_user(User).
+
+
+% ----------------------------------------------------------------------------
+% 2. BASIC FACT RETRIEVAL & UNIFICATION QUERIES
+% ----------------------------------------------------------------------------
+
+% Verify all registered users
+?- user(User).
+
+% Find the category of a specific product (e.g., Pizza)
+?- category(pizza, Category).
+
+% Find all products in the 'electronics' category
+?- category(Product, electronics).
+
+% Find all products in the 'grocery' category
+?- category(Product, grocery).
+
+% Find all accessories and their internal identifiers
+?- category(Product, accessory), product_id(Id, Product).
+
+% Retrieve the formatted display name of an item
+?- display_name(mobile_case, Name).
+
+
+% ----------------------------------------------------------------------------
+% 3. CUSTOMER PURCHASE HISTORY QUERIES
+% ----------------------------------------------------------------------------
+
+% Find all products purchased by user1
+?- purchased(user1, Product).
+
+% Find all products purchased by user2
+?- purchased(user2, Product).
+
+% Find all products purchased by user3
+?- purchased(user3, Product).
+
+% Check if user1 has purchased pizza (Boolean verification)
+?- purchased(user1, pizza).
+
+% Check if user2 has purchased a charger
+?- purchased(user2, charger).
+
+
+% ----------------------------------------------------------------------------
+% 4. PREFERENCE DETECTION & CATEGORY-BASED RECOMMENDATIONS
+% ----------------------------------------------------------------------------
+
+% Infer which categories user1 likes based on historical purchases
+?- likes_category(user1, Category).
+
+% Infer which categories user2 likes
+?- likes_category(user2, Category).
+
+% Find all recommended products for user1 based on category preference
+% (Note: Returns products in preferred category that user1 has NOT yet purchased)
+?- recommend_by_category(user1, Product).
+
+% Collect distinct category recommendations as a list
+?- setof(Product, recommend_by_category(user1, Product), Recommendations).
+
+
+% ----------------------------------------------------------------------------
+% 5. RELATED & COMPLEMENTARY PRODUCT RECOMMENDATIONS
+% ----------------------------------------------------------------------------
+
+% Find products related to 'mobile'
+?- related(mobile, RelatedItem).
+
+% Find products related to 'laptop'
+?- related(laptop, RelatedItem).
+
+% Query recommendations for user2 based on purchased related items
+% (Demonstrates backtracking: press ';' for next solutions)
+?- recommend_related(user2, Product).
+
+% Collect all related recommendations for user2 into a single list
+?- findall(P, recommend_related(user2, P), List).
+
+
+% ----------------------------------------------------------------------------
+% 6. FREQUENTLY BOUGHT TOGETHER (CO-PURCHASE PATTERNS)
+% ----------------------------------------------------------------------------
+
+% Find all items frequently bought together with 'milk'
+?- frequently_bought(milk, Item).
+
+% Find all items frequently bought together with 'mobile'
+?- frequently_bought(mobile, Item).
+
+% Query frequently-bought recommendations for user3 (who purchased milk)
+?- recommend_frequently_bought(user3, Product).
+
+
+% ----------------------------------------------------------------------------
+% 7. INTELLIGENT STORE PLACEMENT SUGGESTIONS
+% ----------------------------------------------------------------------------
+
+% Find all store placement pairs based on co-purchase frequency
+?- placement_suggestion(Product1, Product2).
+
+% Find where to place items near 'milk'
+?- placement_suggestion(milk, NeighborProduct).
+
+% Find where to place items near 'mobile'
+?- placement_suggestion(mobile, NeighborProduct).
+
+
+% ----------------------------------------------------------------------------
+% 8. DYNAMIC RUNTIME UPDATES (SESSION STATE MODIFICATION)
+% ----------------------------------------------------------------------------
+
+% Simulate user2 purchasing a 'laptop' during runtime
+?- assertz(purchased(user2, laptop)).
+
+% Verify user2's updated purchase history
+?- purchased(user2, P).
+
+% Check newly generated related recommendations for user2 after purchase
+?- recommend_related(user2, P).
+
+% Switch active user session to user1
+?- retractall(current_user(_)), assertz(current_user(user1)).
+
+% Reset/remove the runtime test purchase
+?- retract(purchased(user2, laptop)).
+
+
+% ----------------------------------------------------------------------------
+% 9. BACKTRACKING DEMONSTRATION QUERIES (VIVA / PROFESSOR DEMO)
+% ----------------------------------------------------------------------------
+
+% Ask SWI-Prolog to find each solution one by one:
+% Press ';' (semicolon) or spacebar after each solution until 'false.' is printed:
+?- recommend_related(user2, Product).
+% Expected interaction:
+% Product = mobile_case ;
+% Product = tempered_glass ;
+% Product = charger.
+
+% Backtracking across all store placement pairings:
+?- placement_suggestion(P1, P2).
+% Expected interaction:
+% P1 = milk, P2 = bread ;
+% P1 = milk, P2 = butter ;
+% P1 = milk, P2 = eggs ;
+% P1 = mobile, P2 = mobile_case ;
+% P1 = mobile, P2 = tempered_glass.
+
+
+% ----------------------------------------------------------------------------
+% 10. TRACE / EXECUTION PROOF (FOR IN-DEPTH EVALUATION)
+% ----------------------------------------------------------------------------
+
+% Enable execution tracing to inspect internal SLD resolution steps:
+% ?- trace.
+% ?- recommend_related(user2, Product).
+% (Press Enter to step through Call, Exit, Redo, Fail ports)
+% ?- nodebug.
+

@@ -1,0 +1,708 @@
+
+╔══════════════════════════════════════════════════════╗
+║         PERSONALIZED PRODUCT RECOMMENDATION          ║
+║         & INTELLIGENT STORE PLACEMENT SYSTEM         ║
+║                        PROLOG                        ║
+╚══════════════════════════════════════════════════════╝
+
+AI LAB PROJECT
+Symbolic AI | Rule-Based Recommendation
+
+Features:
+✓ Personalized Recommendations
+✓ Related Product Recommendation
+✓ Frequently Bought Together
+✓ Explainable AI
+✓ Store Placement Intelligence
+✓ Prolog Backtracking
+
+--------------------------------------------------------
+Press Enter to continue...
+========================================================
+                       MAIN MENU                        
+========================================================
+
+[1] View Products
+[2] View Categories
+[3] Select User
+[4] View Purchase History
+[5] Purchase Product
+[6] Personalized Recommendations
+[7] Related Product Recommendations
+[8] Frequently Bought Together
+[9] Store Placement Suggestions
+[10] Explain Recommendation
+[11] Backtracking Demonstration
+[12] System Information
+[0] Exit
+
+--------------------------------------------------------
+Current User: user2
+--------------------------------------------------------
+
+Enter choice: 
+╔══════════════════════════════════════════════════════╗
+║                   PRODUCT CATALOG                    ║
+╚══════════════════════════════════════════════════════╝
+
+ID   PRODUCT             CATEGORY
+--------------------------------------------------------
+1    Pizza               Fast Food
+2    Burger              Fast Food
+3    Sandwich            Fast Food
+4    Fries               Fast Food
+5    Soft Drink          Fast Food
+6    Mobile              Electronics
+7    Laptop              Electronics
+8    Milk                Grocery
+9    Bread               Grocery
+10   Butter              Grocery
+11   Eggs                Grocery
+12   Mobile Case         Accessory
+13   Tempered Glass      Accessory
+14   Charger             Accessory
+15   Laptop Bag          Accessory
+16   Mouse               Accessory
+--------------------------------------------------------
+--------------------------------------------------------
+Press Enter to continue...
+========================================================
+                       MAIN MENU                        
+========================================================
+
+[1] View Products
+[2] View Categories
+[3] Select User
+[4] View Purchase History
+[5] Purchase Product
+[6] Personalized Recommendations
+[7] Related Product Recommendations
+[8] Frequently Bought Together
+[9] Store Placement Suggestions
+[10] Explain Recommendation
+[11] Backtracking Demonstration
+[12] System Information
+[0] Exit
+
+--------------------------------------------------------
+Current User: user2
+--------------------------------------------------------
+
+Enter choice: 
+╔══════════════════════════════════════════════════════╗
+║                      CATEGORIES                      ║
+╚══════════════════════════════════════════════════════╝
+
+ACCESSORY
+  • Mobile Case
+  • Tempered Glass
+  • Charger
+  • Laptop Bag
+  • Mouse
+
+ELECTRONICS
+  • Mobile
+  • Laptop
+
+FAST FOOD
+  • Pizza
+  • Burger
+  • Sandwich
+  • Fries
+  • Soft Drink
+
+GROCERY
+  • Milk
+  • Bread
+  • Butter
+  • Eggs
+
+--------------------------------------------------------
+Press Enter to continue...
+========================================================
+                       MAIN MENU                        
+========================================================
+
+[1] View Products
+[2] View Categories
+[3] Select User
+[4] View Purchase History
+[5] Purchase Product
+[6] Personalized Recommendations
+[7] Related Product Recommendations
+[8] Frequently Bought Together
+[9] Store Placement Suggestions
+[10] Explain Recommendation
+[11] Backtracking Demonstration
+[12] System Information
+[0] Exit
+
+--------------------------------------------------------
+Current User: user2
+--------------------------------------------------------
+
+Enter choice: 
+╔══════════════════════════════════════════════════════╗
+║                     SELECT USER                      ║
+╚══════════════════════════════════════════════════════╝
+
+[1] user1
+[2] user2
+[3] user3
+
+Enter user: 
+✓ User selected successfully.
+
+Current User: user1
+--------------------------------------------------------
+Press Enter to continue...
+========================================================
+                       MAIN MENU                        
+========================================================
+
+[1] View Products
+[2] View Categories
+[3] Select User
+[4] View Purchase History
+[5] Purchase Product
+[6] Personalized Recommendations
+[7] Related Product Recommendations
+[8] Frequently Bought Together
+[9] Store Placement Suggestions
+[10] Explain Recommendation
+[11] Backtracking Demonstration
+[12] System Information
+[0] Exit
+
+--------------------------------------------------------
+Current User: user1
+--------------------------------------------------------
+
+Enter choice: 
+╔══════════════════════════════════════════════════════╗
+║                   PURCHASE HISTORY                   ║
+╚══════════════════════════════════════════════════════╝
+
+Customer: user1
+
+Purchased Products:
+• Pizza (Fast Food)
+• Burger (Fast Food)
+• Sandwich (Fast Food)
+--------------------------------------------------------
+Press Enter to continue...
+========================================================
+                       MAIN MENU                        
+========================================================
+
+[1] View Products
+[2] View Categories
+[3] Select User
+[4] View Purchase History
+[5] Purchase Product
+[6] Personalized Recommendations
+[7] Related Product Recommendations
+[8] Frequently Bought Together
+[9] Store Placement Suggestions
+[10] Explain Recommendation
+[11] Backtracking Demonstration
+[12] System Information
+[0] Exit
+
+--------------------------------------------------------
+Current User: user1
+--------------------------------------------------------
+
+Enter choice: 
+╔══════════════════════════════════════════════════════╗
+║             PERSONALIZED RECOMMENDATIONS             ║
+╚══════════════════════════════════════════════════════╝
+
+Customer: user1
+
+Purchase History:
+• Pizza
+• Burger
+• Sandwich
+
+Detected Preference:
+→ FAST FOOD
+
+Recommended Products:
+--------------------------------------------------------
+  1. Fries
+  2. Soft Drink
+--------------------------------------------------------
+
+Reason:
+The customer purchased multiple products from the
+Fast Food category.
+
+Inference:
+purchased → category → preference → recommendation
+--------------------------------------------------------
+Press Enter to continue...
+========================================================
+                       MAIN MENU                        
+========================================================
+
+[1] View Products
+[2] View Categories
+[3] Select User
+[4] View Purchase History
+[5] Purchase Product
+[6] Personalized Recommendations
+[7] Related Product Recommendations
+[8] Frequently Bought Together
+[9] Store Placement Suggestions
+[10] Explain Recommendation
+[11] Backtracking Demonstration
+[12] System Information
+[0] Exit
+
+--------------------------------------------------------
+Current User: user1
+--------------------------------------------------------
+
+Enter choice: 
+╔══════════════════════════════════════════════════════╗
+║                     SELECT USER                      ║
+╚══════════════════════════════════════════════════════╝
+
+[1] user1
+[2] user2
+[3] user3
+
+Enter user: 
+✓ User selected successfully.
+
+Current User: user2
+--------------------------------------------------------
+Press Enter to continue...
+========================================================
+                       MAIN MENU                        
+========================================================
+
+[1] View Products
+[2] View Categories
+[3] Select User
+[4] View Purchase History
+[5] Purchase Product
+[6] Personalized Recommendations
+[7] Related Product Recommendations
+[8] Frequently Bought Together
+[9] Store Placement Suggestions
+[10] Explain Recommendation
+[11] Backtracking Demonstration
+[12] System Information
+[0] Exit
+
+--------------------------------------------------------
+Current User: user2
+--------------------------------------------------------
+
+Enter choice: 
+╔══════════════════════════════════════════════════════╗
+║                   PURCHASE HISTORY                   ║
+╚══════════════════════════════════════════════════════╝
+
+Customer: user2
+
+Purchased Products:
+• Mobile (Electronics)
+--------------------------------------------------------
+Press Enter to continue...
+========================================================
+                       MAIN MENU                        
+========================================================
+
+[1] View Products
+[2] View Categories
+[3] Select User
+[4] View Purchase History
+[5] Purchase Product
+[6] Personalized Recommendations
+[7] Related Product Recommendations
+[8] Frequently Bought Together
+[9] Store Placement Suggestions
+[10] Explain Recommendation
+[11] Backtracking Demonstration
+[12] System Information
+[0] Exit
+
+--------------------------------------------------------
+Current User: user2
+--------------------------------------------------------
+
+Enter choice: 
+╔══════════════════════════════════════════════════════╗
+║                   PURCHASE PRODUCT                   ║
+╚══════════════════════════════════════════════════════╝
+
+Current User: user2
+
+Enter product: 
+✓ Purchase successful.
+
+User: user2
+Product: laptop
+
+╔══════════════════════════════════════════════════════╗
+║              RECOMMENDATIONS GENERATED               ║
+╚══════════════════════════════════════════════════════╝
+
+You purchased:
+→ Laptop
+
+Recommended for you:
+
+  1. Laptop Bag
+  2. Mouse
+
+Why?
+
+Laptop Bag
+→ Related to Laptop
+
+Mouse
+→ Related to Laptop
+
+✓ Recommendations generated using Prolog rules.
+--------------------------------------------------------
+Press Enter to continue...
+========================================================
+                       MAIN MENU                        
+========================================================
+
+[1] View Products
+[2] View Categories
+[3] Select User
+[4] View Purchase History
+[5] Purchase Product
+[6] Personalized Recommendations
+[7] Related Product Recommendations
+[8] Frequently Bought Together
+[9] Store Placement Suggestions
+[10] Explain Recommendation
+[11] Backtracking Demonstration
+[12] System Information
+[0] Exit
+
+--------------------------------------------------------
+Current User: user2
+--------------------------------------------------------
+
+Enter choice: 
+╔══════════════════════════════════════════════════════╗
+║                RELATED PRODUCT ENGINE                ║
+╚══════════════════════════════════════════════════════╝
+
+Purchased Product:
+→ Laptop
+
+Related Products:
+--------------------------------------------------------
+  1. Laptop Bag
+  2. Mouse
+--------------------------------------------------------
+
+Logic:
+related(laptop, Product)
+
+✓ Recommendation generated using Prolog inference.
+--------------------------------------------------------
+Press Enter to continue...
+========================================================
+                       MAIN MENU                        
+========================================================
+
+[1] View Products
+[2] View Categories
+[3] Select User
+[4] View Purchase History
+[5] Purchase Product
+[6] Personalized Recommendations
+[7] Related Product Recommendations
+[8] Frequently Bought Together
+[9] Store Placement Suggestions
+[10] Explain Recommendation
+[11] Backtracking Demonstration
+[12] System Information
+[0] Exit
+
+--------------------------------------------------------
+Current User: user2
+--------------------------------------------------------
+
+Enter choice: 
+╔══════════════════════════════════════════════════════╗
+║              FREQUENTLY BOUGHT TOGETHER              ║
+╚══════════════════════════════════════════════════════╝
+
+Product:
+→ Mobile
+
+Frequently Bought Together:
+--------------------------------------------------------
+  1. Mobile Case
+  2. Tempered Glass
+--------------------------------------------------------
+
+Reason:
+These products have a predefined historical
+co-purchase relationship.
+
+✓ Association identified using Prolog facts.
+--------------------------------------------------------
+Press Enter to continue...
+========================================================
+                       MAIN MENU                        
+========================================================
+
+[1] View Products
+[2] View Categories
+[3] Select User
+[4] View Purchase History
+[5] Purchase Product
+[6] Personalized Recommendations
+[7] Related Product Recommendations
+[8] Frequently Bought Together
+[9] Store Placement Suggestions
+[10] Explain Recommendation
+[11] Backtracking Demonstration
+[12] System Information
+[0] Exit
+
+--------------------------------------------------------
+Current User: user2
+--------------------------------------------------------
+
+Enter choice: 
+╔══════════════════════════════════════════════════════╗
+║             STORE PLACEMENT INTELLIGENCE             ║
+╚══════════════════════════════════════════════════════╝
+
+PRODUCT ASSOCIATIONS
+
+PRODUCT A       PRODUCT B       RELATION
+--------------------------------------------------------
+Milk            Bread           Frequently Bought
+Milk            Butter          Frequently Bought
+Milk            Eggs            Frequently Bought
+Mobile          Mobile Case     Frequently Bought
+Mobile          Tempered Glass  Frequently Bought
+--------------------------------------------------------
+
+PLACEMENT OPPORTUNITIES
+
+→ Consider placing Bread near Milk.
+→ Consider placing Butter near Milk.
+→ Consider placing Eggs near Milk.
+→ Consider placing Mobile Case near Mobile.
+→ Consider placing Tempered Glass near Mobile.
+
+Note:
+These are potential placement opportunities based on
+historical co-purchase relationships. They do not
+guarantee increased sales.
+--------------------------------------------------------
+Press Enter to continue...
+========================================================
+                       MAIN MENU                        
+========================================================
+
+[1] View Products
+[2] View Categories
+[3] Select User
+[4] View Purchase History
+[5] Purchase Product
+[6] Personalized Recommendations
+[7] Related Product Recommendations
+[8] Frequently Bought Together
+[9] Store Placement Suggestions
+[10] Explain Recommendation
+[11] Backtracking Demonstration
+[12] System Information
+[0] Exit
+
+--------------------------------------------------------
+Current User: user2
+--------------------------------------------------------
+
+Enter choice: 
+╔══════════════════════════════════════════════════════╗
+║               WHY THIS RECOMMENDATION?               ║
+╚══════════════════════════════════════════════════════╝
+
+User:
+user2
+
+Recommendation:
+Mobile Case
+
+Reason:
+You purchased Mobile.
+
+Knowledge:
+related(mobile, mobile_case).
+
+Inference:
+Purchased Mobile
+       ↓
+Related Product
+       ↓
+Mobile Case
+       ↓
+Recommendation
+
+✓ Explanation generated from Prolog knowledge.
+--------------------------------------------------------
+Press Enter to continue...
+========================================================
+                       MAIN MENU                        
+========================================================
+
+[1] View Products
+[2] View Categories
+[3] Select User
+[4] View Purchase History
+[5] Purchase Product
+[6] Personalized Recommendations
+[7] Related Product Recommendations
+[8] Frequently Bought Together
+[9] Store Placement Suggestions
+[10] Explain Recommendation
+[11] Backtracking Demonstration
+[12] System Information
+[0] Exit
+
+--------------------------------------------------------
+Current User: user2
+--------------------------------------------------------
+
+Enter choice: 
+╔══════════════════════════════════════════════════════╗
+║                  BACKTRACKING DEMO                   ║
+╚══════════════════════════════════════════════════════╝
+
+Query:
+
+?- recommend_related(user2, Product).
+
+Prolog searches the knowledge base...
+
+Solution 1:
+Product = mobile_case
+
+Solution 2:
+Product = tempered_glass
+
+Solution 3:
+Product = charger
+
+Solution 4:
+Product = laptop_bag
+
+Solution 5:
+Product = mouse
+
+No more solutions.
+
+false.
+
+--------------------------------------------------------
+CONCEPT:
+Prolog uses backtracking to search for alternative
+valid solutions across clauses in the knowledge base.
+--------------------------------------------------------
+--------------------------------------------------------
+Press Enter to continue...
+========================================================
+                       MAIN MENU                        
+========================================================
+
+[1] View Products
+[2] View Categories
+[3] Select User
+[4] View Purchase History
+[5] Purchase Product
+[6] Personalized Recommendations
+[7] Related Product Recommendations
+[8] Frequently Bought Together
+[9] Store Placement Suggestions
+[10] Explain Recommendation
+[11] Backtracking Demonstration
+[12] System Information
+[0] Exit
+
+--------------------------------------------------------
+Current User: user2
+--------------------------------------------------------
+
+Enter choice: 
+╔══════════════════════════════════════════════════════╗
+║                  SYSTEM INFORMATION                  ║
+╚══════════════════════════════════════════════════════╝
+
+Project:
+Personalized Product Recommendation System
+
+AI Approach:
+Symbolic AI / Rule-Based AI
+
+Language:
+Prolog
+
+Engine:
+SWI-Prolog
+
+Machine Learning:
+Not Used
+
+Database:
+Not Used
+
+Web Framework:
+Not Used
+
+Core Concepts:
+• Knowledge Representation
+• Facts
+• Rules
+• Queries
+• Unification
+• Logical Inference
+• Backtracking
+• Explainable Reasoning
+--------------------------------------------------------
+Press Enter to continue...
+========================================================
+                       MAIN MENU                        
+========================================================
+
+[1] View Products
+[2] View Categories
+[3] Select User
+[4] View Purchase History
+[5] Purchase Product
+[6] Personalized Recommendations
+[7] Related Product Recommendations
+[8] Frequently Bought Together
+[9] Store Placement Suggestions
+[10] Explain Recommendation
+[11] Backtracking Demonstration
+[12] System Information
+[0] Exit
+
+--------------------------------------------------------
+Current User: user2
+--------------------------------------------------------
+
+Enter choice: 
+
+╔══════════════════════════════════════════════════════╗
+║          THANK YOU FOR USING THE AI SYSTEM!          ║
+╚══════════════════════════════════════════════════════╝
+
+Application terminated cleanly. Goodbye!
+

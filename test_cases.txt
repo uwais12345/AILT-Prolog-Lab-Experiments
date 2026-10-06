@@ -1,0 +1,207 @@
+================================================================================
+                    FUNCTIONAL TEST SUITE & VERIFICATION REPORT
+Project: Personalized Product Recommendation & Intelligent Store Placement
+Language / Environment: SWI-Prolog 9.2.x (Linux x86_64)
+Test Execution Mode: Automated & Interactive Blackbox/Whitebox Testing
+================================================================================
+
+SUMMARY RESULTS:
+--------------------------------------------------------------------------------
+Total Test Cases Planned:    15
+Total Test Cases Executed:   15
+Passed:                      15 (100%)
+Failed:                       0 (0%)
+Defects Logged:               0
+Overall Status:              VERIFIED & PASSED
+================================================================================
+
+--------------------------------------------------------------------------------
+TC-01: System Launch and Splash Screen Display
+--------------------------------------------------------------------------------
+Module:             Frontend / Entry Point
+Objective:          Verify start/0 displays project title, academic banner, features,
+                    and awaits keypress before navigating to the main menu.
+Input:              ?- start. [followed by Enter key]
+Expected Result:    System displays unicode box header with:
+                    "PERSONALIZED PRODUCT RECOMMENDATION & INTELLIGENT STORE PLACEMENT"
+                    Displays academic tagline: "AI LAB PROJECT | Symbolic AI"
+                    Prompts "Press Enter to continue..." and smoothly loads MAIN MENU.
+Actual Result:      Clean display rendered without syntax or line wrapping issues.
+Status:             PASS
+
+--------------------------------------------------------------------------------
+TC-02: Product Catalog Table Rendering
+--------------------------------------------------------------------------------
+Module:             Catalog Engine (Option 1)
+Objective:          Verify all 16 items are displayed in tabular format with ID,
+                    pretty product name, and capitalized category name.
+Input:              Menu Choice: 1
+Expected Result:    Formatted table containing 16 items (Pizza, Burger... Mouse)
+                    aligned cleanly with column headers ID, PRODUCT, CATEGORY.
+Actual Result:      All 16 products listed accurately from knowledge base facts.
+Status:             PASS
+
+--------------------------------------------------------------------------------
+TC-03: Product Category Grouping
+--------------------------------------------------------------------------------
+Module:             Category Viewer (Option 2)
+Objective:          Verify products are dynamically grouped under their parent categories:
+                    Fast Food, Electronics, Grocery, Accessory.
+Input:              Menu Choice: 2
+Expected Result:    Distinct sections for each category with bullet points:
+                    ACCESSORY (5 items), ELECTRONICS (2 items), FAST FOOD (5 items),
+                    GROCERY (4 items).
+Actual Result:      Dynamic aggregation using findall/2 and sort/2 successful.
+Status:             PASS
+
+--------------------------------------------------------------------------------
+TC-04: User Selection and Session State Transition
+--------------------------------------------------------------------------------
+Module:             Session Manager (Option 3)
+Objective:          Verify active user session updates dynamically in current_user/1.
+Input:              Menu Choice: 3 -> Enter 'user1' (or '1')
+Expected Result:    "✓ User selected successfully."
+                    "Current User: user1"
+                    Main Menu prompt reflects "Current User: user1".
+Actual Result:      Session updated via retractall/assertz; menu header updated.
+Status:             PASS
+
+--------------------------------------------------------------------------------
+TC-05: User Selection Validation (Invalid Input)
+--------------------------------------------------------------------------------
+Module:             Session Manager / Error Handling (Option 3)
+Objective:          Verify application does not crash on non-existent user identifier.
+Input:              Menu Choice: 3 -> Enter 'user99'
+Expected Result:    "✗ Invalid user."
+                    Lists allowed users (user1, user2, user3) and recovers safely.
+Actual Result:      Safely trapped; returned to menu without crash or unhandled exception.
+Status:             PASS
+
+--------------------------------------------------------------------------------
+TC-06: View Customer Purchase History
+--------------------------------------------------------------------------------
+Module:             Customer Profile (Option 4)
+Objective:          Verify display of purchased goods for current active user.
+Input:              Active User: user1 -> Menu Choice: 4
+Expected Result:    Lists Pizza (Fast Food), Burger (Fast Food), Sandwich (Fast Food).
+Actual Result:      Exact purchase history matches initial facts in knowledge base.
+Status:             PASS
+
+--------------------------------------------------------------------------------
+TC-07: Personalized Category-Based Recommendations
+--------------------------------------------------------------------------------
+Module:             Symbolic Inference Engine (Option 6)
+Objective:          Verify preference detection and unpurchased category recommendations.
+Input:              Active User: user1 (bought pizza, burger, sandwich) -> Menu Choice: 6
+Expected Result:    Detected Preference: FAST FOOD
+                    Recommended Products: 1. Fries, 2. Soft Drink
+                    Reason & logical deduction chain correctly displayed.
+Actual Result:      Fries and Soft Drink correctly inferred; already purchased
+                    items (Pizza, Burger, Sandwich) excluded via negation (\+).
+Status:             PASS
+
+--------------------------------------------------------------------------------
+TC-08: Related Complementary Products Engine
+--------------------------------------------------------------------------------
+Module:             Relationship Engine (Option 7)
+Objective:          Verify complementary accessories recommendation for purchased hardware.
+Input:              Active User: user2 (purchased mobile) -> Menu Choice: 7
+Expected Result:    Recommended: 1. Mobile Case, 2. Tempered Glass, 3. Charger
+                    Logic displayed: related(mobile, Product).
+Actual Result:      Exact 3 accessories identified from related/2 facts.
+Status:             PASS
+
+--------------------------------------------------------------------------------
+TC-09: Frequently Bought Together Associations
+--------------------------------------------------------------------------------
+Module:             Co-Purchase Association Engine (Option 8)
+Objective:          Verify retrieval of historically co-purchased items.
+Input:              Active User: user3 (purchased milk) -> Menu Choice: 8
+Expected Result:    Product: Milk
+                    Frequently Bought Together: 1. Bread, 2. Butter, 3. Eggs
+                    Reason cites historical co-purchase relationship.
+Actual Result:      Successfully matched 3 co-purchased grocery items.
+Status:             PASS
+
+--------------------------------------------------------------------------------
+TC-10: Intelligent Store Placement Opportunities
+--------------------------------------------------------------------------------
+Module:             Store Placement Intelligence (Option 9)
+Objective:          Verify generation of retail placement suggestions with academic disclaimer.
+Input:              Menu Choice: 9
+Expected Result:    Associations Table: Milk-Bread, Milk-Butter, Milk-Eggs,
+                    Mobile-Mobile Case, Mobile-Tempered Glass.
+                    Placement opportunities: "Consider placing Bread near Milk", etc.
+                    Academic disclaimer: "These are potential placement opportunities...
+                    They do not guarantee increased sales."
+Actual Result:      Complete table rendered alongside opportunities and disclaimer.
+Status:             PASS
+
+--------------------------------------------------------------------------------
+TC-11: Explainable AI (XAI) Deduction Chain
+--------------------------------------------------------------------------------
+Module:             Explanation Facility (Option 10)
+Objective:          Verify transparent, human-readable justification of recommendation.
+Input:              Active User: user2 -> Menu Choice: 10
+Expected Result:    Displays:
+                    User: user2
+                    Recommendation: Mobile Case
+                    Reason: You purchased Mobile.
+                    Knowledge: related(mobile, mobile_case).
+                    Inference: Purchased Mobile -> Related Product -> Mobile Case -> Rec.
+Actual Result:      Full symbolic inference chain displayed without blackbox approximations.
+Status:             PASS
+
+--------------------------------------------------------------------------------
+TC-12: Prolog Backtracking Demonstration Screen
+--------------------------------------------------------------------------------
+Module:             Backtracking Inspector (Option 11)
+Objective:          Demonstrate step-by-step resolution of multiple solutions and final 'false.'.
+Input:              Menu Choice: 11
+Expected Result:    Query: ?- recommend_related(user2, Product).
+                    Solution 1: Product = mobile_case
+                    Solution 2: Product = tempered_glass
+                    Solution 3: Product = charger
+                    No more solutions.
+                    false.
+Actual Result:      All 3 solutions sequentially formatted; concept explanation presented.
+Status:             PASS
+
+--------------------------------------------------------------------------------
+TC-13: Real-Time Purchase and Instant Recommendation Trigger
+--------------------------------------------------------------------------------
+Module:             Dynamic Transaction Manager (Option 5)
+Input:              Active User: user2 -> Menu Choice: 5 -> Enter 'laptop'
+Expected Result:    Asserts purchased(user2, laptop).
+                    Displays purchase confirmation.
+                    Immediately triggers real-time recommendations:
+                    1. Laptop Bag (Related to Laptop)
+                    2. Mouse (Related to Laptop)
+Actual Result:      Dynamic assertion succeeds; instant recommendation screen triggered.
+Status:             PASS
+
+--------------------------------------------------------------------------------
+TC-14: Duplicate Purchase Prevention
+--------------------------------------------------------------------------------
+Module:             Transaction Validation (Option 5)
+Objective:          Verify system rejects re-purchasing an item already in history.
+Input:              Active User: user2 -> Menu Choice: 5 -> Enter 'mobile'
+Expected Result:    "ℹ This product already exists in the user's purchase history."
+                    Transaction aborted without creating duplicate facts.
+Actual Result:      Blocked as expected; database integrity preserved.
+Status:             PASS
+
+--------------------------------------------------------------------------------
+TC-15: System Information and Exit Handling
+--------------------------------------------------------------------------------
+Module:             Metadata & Exit Controller (Options 12 & 0)
+Objective:          Verify Option 12 displays Symbolic AI metadata, and Option 0
+                    terminates cleanly.
+Input:              Menu Choice: 12 -> [Enter] -> Menu Choice: 0
+Expected Result:    Option 12 confirms: Symbolic AI / Rule-Based, SWI-Prolog,
+                    No ML, No DB, Core Concepts listed.
+                    Option 0 outputs: "THANK YOU FOR USING THE AI SYSTEM! Goodbye!"
+Actual Result:      Application terminated cleanly to Prolog interpreter prompt.
+Status:             PASS
+================================================================================
+

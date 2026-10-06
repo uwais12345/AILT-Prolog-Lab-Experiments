@@ -1,0 +1,138 @@
+================================================================================
+           5-MINUTE PROJECT PRESENTATION & LIVE DEMO SCRIPT (FOR VIVA)
+Project: Personalized Product Recommendation & Intelligent Store Placement System
+Technology: 100% SWI-Prolog (Pure Symbolic AI)
+Target Audience: Professor / Lab Evaluator / Viva Jury
+================================================================================
+
+TIMELINE BREAKDOWN:
+- Minute 1 (0:00 - 1:00): Introduction, Problem Statement, & Technology Choice
+- Minute 2 (1:00 - 2:00): Core AI Architecture & Knowledge Representation
+- Minute 3 (2:00 - 3:00): Live Terminal Demo (Menu, Purchase, & Recommendations)
+- Minute 4 (3:00 - 4:00): Explainable AI & Store Placement Intelligence
+- Minute 5 (4:00 - 5:00): Backtracking Demonstration, Viva Defense, & Conclusion
+
+================================================================================
+MINUTE 1: INTRODUCTION & PHILOSOPHY (0:00 - 1:00)
+================================================================================
+[SAY THIS]:
+"Good morning / afternoon, Professor. 
+
+Today I am presenting our AI Lab Project: a 'Personalized Product Recommendation 
+and Intelligent Store Placement System' developed entirely in SWI-Prolog.
+
+In an era where most recommendation systems rely on opaque, black-box deep learning 
+models, our goal was to demonstrate the power, elegance, and explainability of 
+Symbolic Artificial Intelligence. 
+
+Our application is built 100% in pure Prolog—meaning zero Python, zero external 
+frameworks, zero neural networks, and no external SQL databases. Everything from 
+knowledge representation, first-order inference, and recommendation logic to the 
+interactive terminal user interface is powered natively by the Prolog engine."
+
+================================================================================
+MINUTE 2: KNOWLEDGE REPRESENTATION & RULES (1:00 - 2:00)
+================================================================================
+[SAY THIS]:
+"Our system operates strictly on first-order logic and Horn clauses. 
+
+We represent domain knowledge as declarative facts:
+1. Product categories: category(pizza, fast_food), category(mobile, electronics).
+2. Customer transactions: purchased(user1, pizza), purchased(user2, mobile).
+3. Complementary relationships: related(mobile, mobile_case), related(mobile, charger).
+4. Co-purchase frequencies: frequently_bought(milk, bread), frequently_bought(milk, eggs).
+
+From these facts, we define logical inference rules:
+- 'likes_category(User, Category)': deduces customer preferences by inspecting 
+  historical purchases.
+- 'recommend_by_category(User, Product)': uses Negation-as-Failure to recommend items 
+  matching that category which the user has not yet purchased.
+- 'recommend_related/2' and 'recommend_frequently_bought/2': infer targeted accessories 
+  and complementary bundles.
+- 'placement_suggestion/2': translates co-purchase relationships into merchandising intelligence."
+
+================================================================================
+MINUTE 3: LIVE TERMINAL DEMO (2:00 - 3:00)
+================================================================================
+[ACTION ON TERMINAL]:
+$ swipl
+?- [recommendation].
+?- start.
+[Press Enter on Splash Screen]
+
+[SAY THIS]:
+"Here is our live terminal interface. As you can see, it features professional box 
+borders, numbered navigation, and session tracking—implemented entirely with Prolog I/O.
+
+Currently, our active user is 'user2'. 
+
+Let's press '4' to view User 2's purchase history. User 2 has previously bought a Mobile.
+
+Now, let's demonstrate dynamic state updates. I will select option '5' to purchase a product.
+Let's enter: 'laptop'.
+
+Immediately, Prolog records this dynamic fact via 'assertz/1' and triggers our real-time 
+recommendation engine. It recommends 'Laptop Bag' and 'Mouse' because they are logically 
+related to Laptop in our knowledge base."
+
+================================================================================
+MINUTE 4: EXPLAINABLE AI & STORE PLACEMENT (3:00 - 4:00)
+================================================================================
+[ACTION ON TERMINAL]:
+Press '10' for 'Explain Recommendation'.
+
+[SAY THIS]:
+"One of the greatest advantages of Symbolic AI is Explainable AI, or XAI. Unlike a neural 
+network where a prediction is a matrix multiplication, our system can trace its exact 
+chain of reasoning:
+- Recommendation: Mobile Case
+- Reason: You purchased Mobile.
+- Knowledge: related(mobile, mobile_case).
+- Inference: Purchased Mobile -> Related Product -> Mobile Case -> Recommendation.
+
+Next, let's inspect Option 9: 'Store Placement Suggestions'.
+Here, the retail store manager can view physical aisle placement opportunities derived 
+directly from customer affinity patterns—such as placing Bread, Butter, and Eggs near Milk. 
+Notice our academic disclaimer: these are potential opportunities based on co-purchase 
+data, maintaining realistic business rigor."
+
+================================================================================
+MINUTE 5: BACKTRACKING & CONCLUSION (4:00 - 5:00)
+================================================================================
+[ACTION ON TERMINAL]:
+Press '11' for 'Backtracking Demonstration'.
+
+[SAY THIS]:
+"Finally, we highlight Prolog's core algorithmic superpower: Chronological Backtracking.
+
+On screen, you see the query: '?- recommend_related(user2, Product).'
+Prolog searches the knowledge base, unifies Product with 'mobile_case', and returns 
+Solution 1. Upon seeking alternative solutions, Prolog backtracks to the choice point 
+and unifies Product with 'tempered_glass', then 'charger', before exhausting all clauses 
+and terminating with 'false.'.
+
+We can also exit the application cleanly via Option '0', and run these exact queries 
+directly in the top-level interpreter:
+?- recommend_by_category(user1, P).
+
+In summary, this project proves that classical logic programming provides an efficient, 
+transparent, and maintainable foundation for intelligent decision support systems. 
+
+Thank you, Professor. I am now ready for your questions!"
+
+================================================================================
+QUICK VIVA CHEAT SHEET (IF ASKED RAPID QUESTIONS):
+--------------------------------------------------------------------------------
+Q: Why use Prolog over Machine Learning?
+A: Explainability, deterministic results, zero training time, no large dataset needed.
+
+Q: How does Prolog search for answers?
+A: Depth-First Search with Chronological Backtracking and Robinson's Unification Algorithm.
+
+Q: What is Closed-World Assumption?
+A: Any statement not provable from facts and rules is assumed to be false (\+ operator).
+
+Q: How is session state maintained?
+A: Through dynamic predicates: current_user/1 and purchased/2 using assertz and retractall.
+================================================================================
+

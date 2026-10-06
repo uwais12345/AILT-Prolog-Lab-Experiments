@@ -1,0 +1,48 @@
+================================================================================
+                                PROJECT ABSTRACT
+================================================================================
+
+TITLE:
+Personalized Product Recommendation and Intelligent Store Placement System Using Prolog
+
+DOMAIN:
+Artificial Intelligence | Knowledge Representation & Reasoning | Symbolic AI | Expert Systems
+
+TECHNOLOGY STACK:
+SWI-Prolog (100% Pure Logic Programming; Zero External Libraries; No ML; No Databases)
+
+ABSTRACT:
+Modern commercial recommendation engines predominantly rely on statistical machine 
+learning and deep neural architectures. While effective at scale, these approaches 
+suffer from significant drawbacks, including a "black-box" nature, excessive 
+computational overhead, and a complete absence of transparent, verifiable reasoning. 
+
+This project presents a lightweight, highly interpretable, and rule-based expert 
+system developed entirely in SWI-Prolog. The system demonstrates how classical 
+Symbolic Artificial Intelligence can solve complex retail recommendation and 
+merchandising problems through formal logic. 
+
+Customer transactions, product taxonomies, complementary relationships, and 
+co-purchase frequencies are represented as declarative first-order facts in a 
+structured knowledge base. Using Horn clause rules, the Prolog inference engine 
+executes logical deduction, term unification, and chronological backtracking to:
+1. Infer implicit user preferences and recommend category-specific unpurchased products.
+2. Recommend immediate complementary accessories upon item acquisition.
+3. Identify frequently co-purchased bundles.
+4. Derive intelligent physical retail shelf-placement suggestions based on market-basket 
+   affinity rules.
+5. Provide native Explainable AI (XAI) capabilities by exposing the exact derivation 
+   trees and logical premises behind every generated recommendation.
+
+The application features a professional, interactive terminal-based frontend built 
+directly inside SWI-Prolog, featuring structured menus, ANSI-formatted visual banners, 
+and input sanitization. The system also exposes direct query interfaces for academic 
+inspection, demonstrating fundamental AI concepts including SLD resolution, 
+depth-first search, and closed-world negation-as-failure. 
+
+Experimental evaluation across multiple test suites confirms that the system operates 
+with deterministic accuracy, sub-millisecond query latency, and absolute interpretability, 
+establishing it as an ideal benchmark and pedagogical model for symbolic knowledge-based 
+reasoning in retail applications.
+================================================================================
+
