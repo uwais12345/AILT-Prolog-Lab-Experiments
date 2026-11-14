@@ -419,10 +419,10 @@ Upon entering `start.`, the system presents the following main menu:
 [6] Personalized Recommendations
 [7] Related Product Recommendations
 [8] Frequently Bought Together
-[9] Store Placement Suggestions
-[10] Explain Recommendation
-[11] Backtracking Demonstration
-[12] System Information
+[9] Explain Recommendation
+[10] System Information
+[11] Add New User
+[12] Admin Panel
 [0] Exit
 
 --------------------------------------------------------
@@ -440,9 +440,8 @@ Enter choice:
 5. **Choose [3]:** Switch back to `user2`.
 6. **Choose [5]:** Purchase a product. Enter `laptop` (or ID `7`).
 7. **Immediate Trigger:** Receive real-time recommendations: Laptop Bag & Mouse with reasoning!
-8. **Choose [10]:** Inspect explainable AI deduction tree.
-9. **Choose [11]:** Run backtracking demonstration.
-10. **Choose [0]:** Cleanly terminate the application.
+8. **Choose [9]:** Inspect explainable AI deduction tree.
+9. **Choose [0]:** Cleanly terminate the application.
 
 ---
 
@@ -538,7 +537,7 @@ All 15 formal test cases executed and passed with 100% compliance:
 *A:* Unification is the algorithmic process of making two first-order terms identical by finding a Most General Unifier (MGU) for their variables. If term $T_1$ is `category(pizza, C)` and $T_2$ is `category(pizza, fast_food)`, unification binds variable `C = fast_food`.
 
 **Q6: What is Backtracking and how is it demonstrated in this project?**  
-*A:* When a sub-goal fails or when alternative solutions are requested via semicolon `;`, Prolog retreats to the most recent **choice point**, unwinds variable bindings, and attempts the next alternative clause. In Option 11, querying `recommend_related(user2, Product)` finds `mobile_case`, backtracks to find `tempered_glass`, backtracks to find `charger`, and finally returns `false.` when choices are exhausted.
+*A:* When a sub-goal fails or when alternative solutions are requested via semicolon `;`, Prolog retreats to the most recent **choice point**, unwinds variable bindings, and attempts the next alternative clause. Querying `recommend_related(user2, Product)` at the Prolog prompt finds `mobile_case`, backtracks to find `tempered_glass`, backtracks to find `charger`, and finally returns `false.` when choices are exhausted.
 
 **Q7: What is the Closed-World Assumption (CWA) and Negation-as-Failure (NAF)?**  
 *A:* Under the Closed-World Assumption, anything that cannot be proven true from the knowledge base is presumed false. Prolog implements this via **Negation-as-Failure** (`\+ Goal`): if `purchased(User, Product)` succeeds, `\+ purchased(User, Product)` fails; if it cannot be proven, the negation succeeds.
@@ -588,4 +587,3 @@ Prolog_Project/
 - **Developed for:** Academic AI Laboratory Evaluation
 - **Paradigm:** Symbolic Artificial Intelligence & Knowledge Representation
 - **Engine:** SWI-Prolog (v9.2+)
-

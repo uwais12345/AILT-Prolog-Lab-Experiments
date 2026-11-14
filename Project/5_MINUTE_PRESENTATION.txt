@@ -1,3 +1,4 @@
+
 ================================================================================
            5-MINUTE PROJECT PRESENTATION & LIVE DEMO SCRIPT (FOR VIVA)
 Project: Personalized Product Recommendation & Intelligent Store Placement System
@@ -100,20 +101,16 @@ data, maintaining realistic business rigor."
 MINUTE 5: BACKTRACKING & CONCLUSION (4:00 - 5:00)
 ================================================================================
 [ACTION ON TERMINAL]:
-Press '11' for 'Backtracking Demonstration'.
+Exit the application with '0', then run the query in the Prolog interpreter.
 
 [SAY THIS]:
 "Finally, we highlight Prolog's core algorithmic superpower: Chronological Backtracking.
 
-On screen, you see the query: '?- recommend_related(user2, Product).'
-Prolog searches the knowledge base, unifies Product with 'mobile_case', and returns 
-Solution 1. Upon seeking alternative solutions, Prolog backtracks to the choice point 
-and unifies Product with 'tempered_glass', then 'charger', before exhausting all clauses 
-and terminating with 'false.'.
-
-We can also exit the application cleanly via Option '0', and run these exact queries 
-directly in the top-level interpreter:
-?- recommend_by_category(user1, P).
+After exiting the application with Option '0', enter this query at the Prolog prompt:
+?- recommend_related(user2, Product).
+Prolog returns 'mobile_case'. Enter ';' to request the next solution; Prolog backtracks
+to find 'tempered_glass', then 'charger', before exhausting all clauses and returning
+'false.'.
 
 In summary, this project proves that classical logic programming provides an efficient, 
 transparent, and maintainable foundation for intelligent decision support systems. 
@@ -135,4 +132,3 @@ A: Any statement not provable from facts and rules is assumed to be false (\+ op
 Q: How is session state maintained?
 A: Through dynamic predicates: current_user/1 and purchased/2 using assertz and retractall.
 ================================================================================
-

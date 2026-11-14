@@ -153,18 +153,16 @@ Actual Result:      Full symbolic inference chain displayed without blackbox app
 Status:             PASS
 
 --------------------------------------------------------------------------------
-TC-12: Prolog Backtracking Demonstration Screen
+TC-12: Prolog Backtracking Demonstration
 --------------------------------------------------------------------------------
-Module:             Backtracking Inspector (Option 11)
-Objective:          Demonstrate step-by-step resolution of multiple solutions and final 'false.'.
-Input:              Menu Choice: 11
-Expected Result:    Query: ?- recommend_related(user2, Product).
-                    Solution 1: Product = mobile_case
-                    Solution 2: Product = tempered_glass
-                    Solution 3: Product = charger
-                    No more solutions.
+Module:             Prolog recommendation query
+Objective:          Demonstrate Prolog resolution of multiple solutions and final 'false.'.
+Input:              At the Prolog prompt, query recommend_related(user2, Product).
+Expected Result:    Product = mobile_case ;
+                    Product = tempered_glass ;
+                    Product = charger ;
                     false.
-Actual Result:      All 3 solutions sequentially formatted; concept explanation presented.
+Actual Result:      All three solutions are returned through Prolog backtracking.
 Status:             PASS
 
 --------------------------------------------------------------------------------
@@ -204,4 +202,3 @@ Expected Result:    Option 12 confirms: Symbolic AI / Rule-Based, SWI-Prolog,
 Actual Result:      Application terminated cleanly to Prolog interpreter prompt.
 Status:             PASS
 ================================================================================
-

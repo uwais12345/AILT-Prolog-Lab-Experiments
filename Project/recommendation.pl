@@ -6,10 +6,20 @@
 % ============================================================================
 
 % Declare dynamic predicates for runtime session state and knowledge updates
+:- dynamic user/1.
 :- dynamic current_user/1.
 :- dynamic purchased/2.
 :- dynamic searched/2.
 :- dynamic viewed/2.
+:- dynamic product_id/2.
+:- dynamic category/2.
+:- dynamic display_name/2.
+:- dynamic related/2.
+:- dynamic frequently_bought/2.
+:- dynamic admin_password/1.
+
+% Default admin password (change via Admin Panel → option 8)
+admin_password('admin123').
 
 % ============================================================================
 % 1. USERS
@@ -17,6 +27,8 @@
 user(user1).
 user(user2).
 user(user3).
+user(user4).
+user(ram).
 
 % Initial default active user
 current_user(user2).
@@ -252,6 +264,8 @@ resolve_user(Input, User) :-
     ( Core == "1" -> User = user1
     ; Core == "2" -> User = user2
     ; Core == "3" -> User = user3
+    ; Core == "4" -> User = user4
+    ; Core == "5" -> User = ram
     ; downcase_atom(Core, User), user(User)
     ).
 
@@ -300,26 +314,247 @@ screen_view_categories :-
 % --- SCREEN 3: Select User ---
 screen_select_user :-
     print_header_box('SELECT USER'),
-    writeln('[1] user1'),
-    writeln('[2] user2'),
-    writeln('[3] user3'),
+    % Dynamically list all known users with numbers
+    findall(U, user(U), AllUsers),
+    forall(
+        nth1(Idx, AllUsers, U),
+        format('[~w] ~w~n', [Idx, U])
+    ),
     nl,
-    write('Enter user: '),
+    write('Enter user number or name: '),
     flush_output,
     read_line_clean(Input),
     nl,
-    ( resolve_user(Input, SelectedUser) ->
+    ( resolve_user_dynamic(Input, AllUsers, SelectedUser) ->
         retractall(current_user(_)),
         assertz(current_user(SelectedUser)),
         writeln('✓ User selected successfully.'),
         nl,
         format('Current User: ~w~n', [SelectedUser])
-    ;   writeln('✗ Invalid user.'),
+    ;   writeln('✗ Invalid user. Please try again.')
+    ).
+
+% Resolve user from dynamic list by index or name
+resolve_user_dynamic(Input, AllUsers, User) :-
+    normalize_space(string(Trimmed), Input),
+    Trimmed \== "",
+    ( number_string(N, Trimmed),
+      integer(N),
+      nth1(N, AllUsers, User)
+    -> true
+    ; downcase_atom(Trimmed, LowerAtom),
+      member(User, AllUsers),
+      downcase_atom(User, LowerAtom)
+    ).
+
+% --- SCREEN: Add New User ---
+screen_add_new_user :-
+    print_header_box('ADD NEW USER'),
+    writeln('Existing Users:'),
+    findall(U, user(U), AllUsers),
+    forall(member(U, AllUsers), format('  • ~w~n', [U])),
+    nl,
+    write('Enter new user name: '),
+    flush_output,
+    read_line_clean(Input),
+    nl,
+    ( Input == "" ->
+        writeln('✗ No name entered. Operation cancelled.')
+    ;   normalize_space(atom(NewUser), Input),
+        ( user(NewUser) ->
+            format('✗ User "~w" already exists.~n', [NewUser])
+        ;   assertz(user(NewUser)),
+            retractall(current_user(_)),
+            assertz(current_user(NewUser)),
+            format('✓ New user "~w" created and set as active user.~n', [NewUser]),
+            nl,
+            new_user_menu_loop(NewUser)
+        )
+    ).
+
+% ─────────────────────────────────────────────────────
+% NEW USER SUB-MENU (dynamic menu shown after creation)
+% ─────────────────────────────────────────────────────
+display_new_user_menu(User) :-
+    findall(P, purchased(User, P), Cart),
+    length(Cart, CartCount),
+    print_double_divider,
+    format('  NEW USER MENU  —  Current User: ~w~n', [User]),
+    print_double_divider,
+    nl,
+    format('[1] Add Product to Cart  (Cart: ~w item(s))~n', [CartCount]),
+    writeln('[2] View Cart'),
+    writeln('[3] Get Personalized Recommendations'),
+    writeln('[0] Back to Main Menu'),
+    nl,
+    print_divider.
+
+new_user_menu_loop(User) :-
+    display_new_user_menu(User),
+    write('Enter choice: '),
+    flush_output,
+    read_line_clean(Input),
+    nl,
+    ( Input == "1" ->
+        screen_new_user_add_to_cart(User),
+        press_enter,
+        new_user_menu_loop(User)
+    ; Input == "2" ->
+        screen_new_user_view_cart(User),
+        press_enter,
+        new_user_menu_loop(User)
+    ; Input == "3" ->
+        screen_new_user_recommendations(User),
+        press_enter,
+        new_user_menu_loop(User)
+    ; Input == "0" ->
+        writeln('Returning to Main Menu...')
+    ;   writeln('✗ Invalid choice. Enter 0, 1, 2 or 3.'),
         nl,
-        writeln('Please select:'),
-        writeln('user1'),
-        writeln('user2'),
-        writeln('user3')
+        new_user_menu_loop(User)
+    ).
+
+% [1] Add Product to Cart sub-screen
+screen_new_user_add_to_cart(User) :-
+    print_header_box('ADD TO CART'),
+    format('User: ~w~n~n', [User]),
+    writeln('Available Products (type name or ID):'),
+    print_divider,
+    forall(
+        product_id(Id, Prod),
+        (
+            get_product_display(Prod, PName),
+            category(Prod, Cat),
+            get_category_display(Cat, CatName),
+            ( purchased(User, Prod) ->
+                format('  ~w. ~w  (~w)  [in cart]~n', [Id, PName, CatName])
+            ;   format('  ~w. ~w  (~w)~n', [Id, PName, CatName])
+            )
+        )
+    ),
+    print_divider,
+    nl,
+    cart_add_loop(User).
+
+% Loop: keep adding products until user presses Enter or types 0
+cart_add_loop(User) :-
+    write('Add product (name/ID, 0 to finish): '),
+    flush_output,
+    read_line_clean(Input),
+    nl,
+    ( Input == "" ->
+        writeln('✓ Done adding products.')
+    ; Input == "0" ->
+        writeln('✓ Done adding products.')
+    ; resolve_product(Input, Product) ->
+        ( purchased(User, Product) ->
+            get_product_display(Product, PName),
+            format('ℹ "~w" is already in your cart.~n~n', [PName]),
+            cart_add_loop(User)
+        ;   assertz(purchased(User, Product)),
+            get_product_display(Product, PName),
+            category(Product, Cat),
+            get_category_display(Cat, CatName),
+            format('  ✓ Added: ~w  (~w)~n~n', [PName, CatName]),
+            cart_add_loop(User)
+        )
+    ;   % Unknown product — check if it was a number (bad ID) or a name (create it)
+        normalize_space(atom(NewProduct), Input),
+        ( number_string(_, Input) ->
+            % It was a number but didn't match any product_id → invalid ID
+            format('✗ "~w" is not a valid product ID. Enter a name or a valid ID (1–16).~n~n',
+                   [NewProduct]),
+            cart_add_loop(User)
+        ;   % It's a text name not in catalog → offer to create it
+            format('ℹ "~w" is not in the catalog.~n', [NewProduct]),
+            writeln('  Select category:  [1] fast_food  [2] electronics  [3] grocery  [4] accessory'),
+            writeln('  (or press Enter to cancel)'),
+            write('  Category: '),
+            flush_output,
+            read_line_clean(CatInput),
+            nl,
+            ( CatInput == "" ->
+                writeln('  Cancelled. Product not added.'),
+                nl,
+                cart_add_loop(User)
+            ; resolve_category(CatInput, NewCat) ->
+                findall(Id, product_id(Id, _), Ids),
+                ( Ids == [] -> NextId = 1 ; max_list(Ids, MaxId), NextId is MaxId + 1 ),
+                assertz(product_id(NextId, NewProduct)),
+                assertz(category(NewProduct, NewCat)),
+                assertz(display_name(NewProduct, NewProduct)),
+                assertz(purchased(User, NewProduct)),
+                format('  ✓ New product "~w" created & added to cart (Category: ~w)~n~n',
+                       [NewProduct, NewCat]),
+                cart_add_loop(User)
+            ;   writeln('  ✗ Invalid category. Product skipped.'),
+                nl,
+                cart_add_loop(User)
+            )
+        )
+    ).
+
+% [2] View Cart sub-screen
+screen_new_user_view_cart(User) :-
+    print_header_box('YOUR CART'),
+    format('User: ~w~n~n', [User]),
+    findall(P, purchased(User, P), Cart),
+    ( Cart == [] ->
+        writeln('ℹ Your cart is empty. Use option 1 to add products.')
+    ;   length(Cart, Count),
+        format('~w item(s) in cart:~n~n', [Count]),
+        print_divider,
+        forall(
+            nth1(Idx, Cart, Item),
+            (
+                get_product_display(Item, IName),
+                category(Item, Cat),
+                get_category_display(Cat, CatName),
+                format('  ~w. ~w  (~w)~n', [Idx, IName, CatName])
+            )
+        ),
+        print_divider
+    ).
+
+% [3] Personalized Recommendations sub-screen
+screen_new_user_recommendations(User) :-
+    print_header_box('PERSONALIZED RECOMMENDATIONS'),
+    format('Customer: ~w~n~n', [User]),
+    findall(P, purchased(User, P), Purchases),
+    ( Purchases == [] ->
+        writeln('ℹ Your cart is empty!'),
+        writeln('Please add products first (option 1) to get recommendations.')
+    ;   writeln('Based on your cart:'),
+        forall(
+            member(PI, Purchases),
+            (
+                get_product_display(PI, PIName),
+                format('  • ~w~n', [PIName])
+            )
+        ),
+        nl,
+        findall(Cat, likes_category(User, Cat), AllCats),
+        sort(AllCats, DetectedCats),
+        writeln('Detected Preferences:'),
+        forall(
+            member(DC, DetectedCats),
+            (
+                get_category_display(DC, DCName),
+                upcase_atom(DCName, UpperDC),
+                format('  → ~w~n', [UpperDC])
+            )
+        ),
+        nl,
+        ( setof(Rec, recommend_by_category(User, Rec), Recs) ->
+            writeln('Recommended Products for You:'),
+            print_divider,
+            print_numbered_items(Recs, 1),
+            print_divider,
+            nl,
+            writeln('Inference Chain:'),
+            writeln('  purchased → category detected → preference inferred → recommendation')
+        ;   writeln('ℹ All products in your preferred categories have been purchased!')
+        )
     ).
 
 % --- SCREEN 4: View Purchase History ---
@@ -347,7 +582,7 @@ screen_purchase_product :-
     current_user(CurrentUser),
     print_header_box('PURCHASE PRODUCT'),
     format('Current User: ~w~n~n', [CurrentUser]),
-    write('Enter product: '),
+    write('Enter product (name or ID): '),
     flush_output,
     read_line_clean(Input),
     nl,
@@ -363,7 +598,50 @@ screen_purchase_product :-
             format('Product: ~w~n', [Product]),
             trigger_realtime_recommendations(CurrentUser, Product)
         )
-    ;   writeln('✗ Product not found.')
+    ;   % Product not found — offer to add it dynamically
+        normalize_space(atom(NewProduct), Input),
+        format('ℹ Product "~w" is not in the catalog.~n', [NewProduct]),
+        nl,
+        writeln('Available categories:'),
+        writeln('  [1] fast_food'),
+        writeln('  [2] electronics'),
+        writeln('  [3] grocery'),
+        writeln('  [4] accessory'),
+        nl,
+        write('Select category (number or name): '),
+        flush_output,
+        read_line_clean(CatInput),
+        nl,
+        ( resolve_category(CatInput, NewCategory) ->
+            % Assign next product ID
+            findall(Id, product_id(Id, _), Ids),
+            ( Ids == [] -> NextId = 1 ; max_list(Ids, MaxId), NextId is MaxId + 1 ),
+            % Register the new product facts
+            assertz(product_id(NextId, NewProduct)),
+            assertz(category(NewProduct, NewCategory)),
+            assertz(display_name(NewProduct, NewProduct)),
+            % Record the purchase
+            assertz(purchased(CurrentUser, NewProduct)),
+            format('✓ New product "~w" added to catalog (ID: ~w, Category: ~w).~n',
+                   [NewProduct, NextId, NewCategory]),
+            nl,
+            format('✓ Purchase of "~w" recorded for user ~w.~n', [NewProduct, CurrentUser]),
+            nl,
+            trigger_realtime_recommendations(CurrentUser, NewProduct)
+        ;   writeln('✗ Invalid category. Purchase cancelled.')
+        )
+    ).
+
+% Resolve category input (number 1-4 or name string)
+resolve_category(Input, Category) :-
+    normalize_space(string(T), Input),
+    ( T == "1" -> Category = fast_food
+    ; T == "2" -> Category = electronics
+    ; T == "3" -> Category = grocery
+    ; T == "4" -> Category = accessory
+    ; downcase_atom(T, CA),
+      member(Category, [fast_food, electronics, grocery, accessory]),
+      Category = CA
     ).
 
 % Sub-routine: Real-Time Recommendation after Purchase
@@ -708,8 +986,7 @@ screen_splash :-
     writeln('✓ Related Product Recommendation'),
     writeln('✓ Frequently Bought Together'),
     writeln('✓ Explainable AI'),
-    writeln('✓ Store Placement Intelligence'),
-    writeln('✓ Prolog Backtracking'),
+    writeln('✓ Dynamic User & Admin Panel'),
     nl,
     print_divider,
     write('Press Enter to continue...'),
@@ -732,10 +1009,10 @@ display_main_menu :-
     writeln('[6] Personalized Recommendations'),
     writeln('[7] Related Product Recommendations'),
     writeln('[8] Frequently Bought Together'),
-    writeln('[9] Store Placement Suggestions'),
-    writeln('[10] Explain Recommendation'),
-    writeln('[11] Backtracking Demonstration'),
-    writeln('[12] System Information'),
+    writeln('[9] Explain Recommendation'),
+    writeln('[10] System Information'),
+    writeln('[11] Add New User'),
+    writeln('[12] Admin Panel'),
     writeln('[0] Exit'),
     nl,
     print_divider,
@@ -791,20 +1068,19 @@ main_menu_loop :-
         press_enter,
         main_menu_loop
     ; CleanInput == "9" ->
-        screen_store_placement,
-        press_enter,
-        main_menu_loop
-    ; CleanInput == "10" ->
         screen_explain_recommendation,
         press_enter,
         main_menu_loop
+    ; CleanInput == "10" ->
+        screen_system_info,
+        press_enter,
+        main_menu_loop
     ; CleanInput == "11" ->
-        screen_backtracking_demo,
+        screen_add_new_user,
         press_enter,
         main_menu_loop
     ; CleanInput == "12" ->
-        screen_system_info,
-        press_enter,
+        screen_admin_login,
         main_menu_loop
     ;   nl,
         writeln('✗ Invalid choice.'),
@@ -813,6 +1089,313 @@ main_menu_loop :-
         press_enter,
         main_menu_loop
     ).
+
+% ============================================================================
+% 9. ADMIN PANEL
+% ============================================================================
+
+% --- Admin Login Screen ---
+screen_admin_login :-
+    print_header_box('ADMIN PANEL LOGIN'),
+    write('Enter admin password: '),
+    flush_output,
+    read_line_clean(Input),
+    nl,
+    ( admin_password(Input) ->
+        writeln('✓ Login successful. Welcome, Admin!'),
+        nl,
+        admin_menu_loop
+    ;   writeln('✗ Incorrect password. Access denied.')
+    ).
+
+% --- Admin Sub-Menu Display ---
+display_admin_menu :-
+    print_double_divider,
+    format('~t~w~t~56|~n', ['ADMIN PANEL']),
+    print_double_divider,
+    nl,
+    writeln('[1] View All Products'),
+    writeln('[2] Add New Product'),
+    writeln('[3] Edit Product Category'),
+    writeln('[4] Delete Product'),
+    writeln('[5] View All Users'),
+    writeln('[6] View User Purchase History'),
+    writeln('[7] Add New User'),
+    writeln('[8] Change Admin Password'),
+    writeln('[0] Exit Admin Panel'),
+    nl,
+    print_divider,
+    nl.
+
+% --- Admin Menu Loop ---
+admin_menu_loop :-
+    display_admin_menu,
+    write('Admin choice: '),
+    flush_output,
+    read_line_clean(Input),
+    nl,
+    ( Input == "0" ->
+        writeln('Exiting Admin Panel...')
+    ; Input == "1" ->
+        admin_view_products,
+        press_enter,
+        admin_menu_loop
+    ; Input == "2" ->
+        admin_add_product,
+        press_enter,
+        admin_menu_loop
+    ; Input == "3" ->
+        admin_edit_product,
+        press_enter,
+        admin_menu_loop
+    ; Input == "4" ->
+        admin_delete_product,
+        press_enter,
+        admin_menu_loop
+    ; Input == "5" ->
+        admin_view_users,
+        press_enter,
+        admin_menu_loop
+    ; Input == "6" ->
+        admin_view_user_history,
+        press_enter,
+        admin_menu_loop
+    ; Input == "7" ->
+        admin_add_user,
+        press_enter,
+        admin_menu_loop
+    ; Input == "8" ->
+        admin_change_password,
+        press_enter,
+        admin_menu_loop
+    ;   writeln('✗ Invalid choice. Enter 0 to 8.'),
+        nl,
+        admin_menu_loop
+    ).
+
+% ─── [1] View All Products ────────────────────────────────────────────────────
+admin_view_products :-
+    print_header_box('ADMIN — ALL PRODUCTS'),
+    format('~w~t~5|~w~t~25|~w~t~42|~n', ['ID', 'PRODUCT', 'CATEGORY']),
+    print_divider,
+    ( \+ product_id(_, _) ->
+        writeln('ℹ No products in catalog.')
+    ;   forall(
+            product_id(Id, Prod),
+            (
+                get_product_display(Prod, PName),
+                ( category(Prod, Cat) ->
+                    get_category_display(Cat, CatName)
+                ;   CatName = 'N/A'
+                ),
+                format('~w~t~5|~w~t~25|~w~n', [Id, PName, CatName])
+            )
+        )
+    ),
+    print_divider,
+    findall(_, product_id(_, _), Ps), length(Ps, Total),
+    format('Total: ~w product(s)~n', [Total]).
+
+% ─── [2] Add New Product ──────────────────────────────────────────────────────
+admin_add_product :-
+    print_header_box('ADMIN — ADD NEW PRODUCT'),
+    write('Product name: '),
+    flush_output,
+    read_line_clean(NameInput),
+    nl,
+    ( NameInput == "" ->
+        writeln('✗ No name entered. Cancelled.')
+    ;   normalize_space(atom(NewProd), NameInput),
+        ( category(NewProd, _) ->
+            format('✗ Product "~w" already exists.~n', [NewProd])
+        ;   writeln('Select category:'),
+            writeln('  [1] fast_food  [2] electronics  [3] grocery  [4] accessory'),
+            write('Category: '),
+            flush_output,
+            read_line_clean(CatInput),
+            nl,
+            ( resolve_category(CatInput, NewCat) ->
+                findall(Id, product_id(Id, _), Ids),
+                ( Ids == [] -> NextId = 1 ; max_list(Ids, MaxId), NextId is MaxId + 1 ),
+                assertz(product_id(NextId, NewProd)),
+                assertz(category(NewProd, NewCat)),
+                assertz(display_name(NewProd, NewProd)),
+                format('✓ Product "~w" added (ID: ~w, Category: ~w).~n',
+                       [NewProd, NextId, NewCat])
+            ;   writeln('✗ Invalid category. Cancelled.')
+            )
+        )
+    ).
+
+% ─── [3] Edit Product Category ───────────────────────────────────────────────
+admin_edit_product :-
+    print_header_box('ADMIN — EDIT PRODUCT CATEGORY'),
+    admin_view_products,
+    nl,
+    write('Enter product name or ID to edit: '),
+    flush_output,
+    read_line_clean(Input),
+    nl,
+    ( Input == "" ->
+        writeln('✗ Cancelled.')
+    ; resolve_product(Input, Prod) ->
+        category(Prod, OldCat),
+        get_product_display(Prod, PName),
+        format('Product: ~w  |  Current Category: ~w~n~n', [PName, OldCat]),
+        writeln('New category:'),
+        writeln('  [1] fast_food  [2] electronics  [3] grocery  [4] accessory'),
+        write('Category: '),
+        flush_output,
+        read_line_clean(CatInput),
+        nl,
+        ( CatInput == "" ->
+            writeln('✗ Cancelled. No changes made.')
+        ; resolve_category(CatInput, NewCat) ->
+            retract(category(Prod, OldCat)),
+            assertz(category(Prod, NewCat)),
+            format('✓ Category of "~w" updated: ~w → ~w~n', [PName, OldCat, NewCat])
+        ;   writeln('✗ Invalid category. No changes made.')
+        )
+    ;   writeln('✗ Product not found.')
+    ).
+
+% ─── [4] Delete Product ───────────────────────────────────────────────────────
+admin_delete_product :-
+    print_header_box('ADMIN — DELETE PRODUCT'),
+    admin_view_products,
+    nl,
+    write('Enter product name or ID to delete: '),
+    flush_output,
+    read_line_clean(Input),
+    nl,
+    ( Input == "" ->
+        writeln('✗ Cancelled.')
+    ; resolve_product(Input, Prod) ->
+        get_product_display(Prod, PName),
+        format('Delete "~w"? Type YES to confirm: ', [PName]),
+        flush_output,
+        read_line_clean(Confirm),
+        nl,
+        ( Confirm == "YES" ->
+            retractall(product_id(_, Prod)),
+            retractall(category(Prod, _)),
+            retractall(display_name(Prod, _)),
+            retractall(purchased(_, Prod)),
+            retractall(related(Prod, _)),
+            retractall(related(_, Prod)),
+            retractall(frequently_bought(Prod, _)),
+            retractall(frequently_bought(_, Prod)),
+            format('✓ Product "~w" and all associated data deleted.~n', [PName])
+        ;   writeln('✗ Cancelled. Product not deleted.')
+        )
+    ;   writeln('✗ Product not found.')
+    ).
+
+% ─── [5] View All Users ───────────────────────────────────────────────────────
+admin_view_users :-
+    print_header_box('ADMIN — ALL USERS'),
+    findall(U, user(U), Users),
+    ( Users == [] ->
+        writeln('ℹ No users found.')
+    ;   length(Users, Total),
+        format('Total Users: ~w~n~n', [Total]),
+        print_divider,
+        forall(
+            nth1(Idx, Users, U),
+            (
+                findall(P, purchased(U, P), Purchases),
+                length(Purchases, PCount),
+                format('~w. ~w  (~w purchase(s))~n', [Idx, U, PCount])
+            )
+        ),
+        print_divider
+    ).
+
+% ─── [6] View User Purchase History ──────────────────────────────────────────
+admin_view_user_history :-
+    print_header_box('ADMIN — USER PURCHASE HISTORY'),
+    findall(U, user(U), Users),
+    forall(nth1(I, Users, U), format('[~w] ~w~n', [I, U])),
+    nl,
+    write('Select user (number or name): '),
+    flush_output,
+    read_line_clean(Input),
+    nl,
+    ( resolve_user_dynamic(Input, Users, TargetUser) ->
+        format('Purchase History for: ~w~n~n', [TargetUser]),
+        findall(P, purchased(TargetUser, P), Purchases),
+        ( Purchases == [] ->
+            writeln('ℹ No purchases recorded.')
+        ;   print_divider,
+            forall(
+                nth1(Idx, Purchases, Item),
+                (
+                    get_product_display(Item, IName),
+                    ( category(Item, Cat) ->
+                        get_category_display(Cat, CatName)
+                    ;   CatName = 'N/A'
+                    ),
+                    format('  ~w. ~w  (~w)~n', [Idx, IName, CatName])
+                )
+            ),
+            print_divider,
+            length(Purchases, PCount),
+            format('Total: ~w item(s)~n', [PCount])
+        )
+    ;   writeln('✗ Invalid user.')
+    ).
+
+% ─── [7] Add New User (Admin) ────────────────────────────────────────────────
+admin_add_user :-
+    print_header_box('ADMIN — ADD NEW USER'),
+    findall(U, user(U), AllUsers),
+    writeln('Existing users:'),
+    forall(member(U, AllUsers), format('  • ~w~n', [U])),
+    nl,
+    write('New user name: '),
+    flush_output,
+    read_line_clean(Input),
+    nl,
+    ( Input == "" ->
+        writeln('✗ Cancelled.')
+    ;   normalize_space(atom(NewUser), Input),
+        ( user(NewUser) ->
+            format('✗ User "~w" already exists.~n', [NewUser])
+        ;   assertz(user(NewUser)),
+            format('✓ User "~w" added to the system.~n', [NewUser])
+        )
+    ).
+
+% ─── [8] Change Admin Password ───────────────────────────────────────────────
+admin_change_password :-
+    print_header_box('ADMIN — CHANGE PASSWORD'),
+    write('Current password: '),
+    flush_output,
+    read_line_clean(Current),
+    nl,
+    ( admin_password(Current) ->
+        write('New password: '),
+        flush_output,
+        read_line_clean(New1),
+        nl,
+        write('Confirm new password: '),
+        flush_output,
+        read_line_clean(New2),
+        nl,
+        ( New1 == "" ->
+            writeln('✗ Password cannot be empty.')
+        ; New1 == New2 ->
+            retractall(admin_password(_)),
+            assertz(admin_password(New1)),
+            writeln('✓ Admin password changed successfully.')
+        ;   writeln('✗ Passwords do not match. No changes made.')
+        )
+    ;   writeln('✗ Current password incorrect. No changes made.')
+    ).
+
+% ============================================================================
+% 10. ENTRY POINT
+% ============================================================================
 
 % Entry Point Predicate
 start :-
